@@ -33,7 +33,7 @@
     <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-          .register("/sw.js")
+          .register("/stopwatch/ServiceWorker.js")
           .then((registration) => {
             console.log("Service worker registration succeeded:", registration);
           })

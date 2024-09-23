@@ -1,6 +1,7 @@
 {
   "name": "stopwatch",
   "version": "0.1.0",
+  "homepage": "https://vvalvvizal.github.io/stopwatch",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -19,7 +20,9 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
@@ -42,10 +45,10 @@
   "devDependencies": {
     "@types/node": "^22.5.5",
     "@vitejs/plugin-react": "^4.3.1",
+    "gh-pages": "^6.1.1",
     "rollup": "^4.22.4",
     "vite": "^5.4.7",
     "vite-plugin-svgr": "^4.2.0",
-    "moduleResolution": "Bundler",
     "vite-tsconfig-paths": "^5.0.1"
   }
 }
