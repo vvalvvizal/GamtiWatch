@@ -1,3 +1,16 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -8,12 +21,12 @@
   margin-top: 10px;
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff; /* 원하는 배경 색상 */
-  color: white; /* 글자 색상 */
-  border-radius: 5px; /* 모서리 둥글기 */
-  cursor: pointer; /* 마우스 커서 모양 */
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .fileInput {
-  display: none; /* 기본 파일 입력 숨기기 */
+  display: none;
 }

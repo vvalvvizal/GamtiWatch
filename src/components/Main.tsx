@@ -11,18 +11,20 @@ const Main = () => {
     setFile(files[0]);
   };
   return (
-    <div className={styles.content}>
-      <h1>스탑워치</h1>
-      <Stopwatch image={file} />
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <h1>스탑워치</h1>
+        <Stopwatch image={file} />
 
-      <label className={styles.uploadLabel}>
-        파일 선택
-        <input
-          type="file"
-          onChange={fileUploadHandler}
-          className={styles.fileInput}
-        />
-      </label>
+        <label className={styles.uploadLabel}>
+          파일 선택
+          <input
+            type="file"
+            onChange={fileUploadHandler}
+            className={styles.fileInput}
+          />
+        </label>
+      </div>
     </div>
   );
 };

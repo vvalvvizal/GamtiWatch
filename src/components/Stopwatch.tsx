@@ -19,7 +19,7 @@ const Stopwatch = ({ image }: StopwatchProps) => {
     return () => clearInterval(intervalId);
   }, [isRunning, time]);
 
-  const maxTime = 240000; //40 minutes
+  const maxTime = 6000; //10minutes
   const hours = Math.floor(time / 360000);
   //1ms = 1000s
   //6000s = 1minues
