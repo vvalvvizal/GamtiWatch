@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import defaultIcon from "../../public/favicon.ico"; // 아이콘 파일 경로
 
 interface ProgressCircleProps {
   percentage: number;
@@ -19,7 +20,7 @@ const ProgressCircle = ({
   milliseconds,
   imageFile,
 }: ProgressCircleProps) => {
-  const [imageSrc, setImagesrc] = useState<string>();
+  const [imageSrc, setImagesrc] = useState<string>(defaultIcon);
 
   useEffect(() => {
     if (imageFile) {
