@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import Stopwatch from "./Stopwatch";
+import styles from "../styles/maindiv.module.css";
 
 const Main = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -10,8 +11,8 @@ const Main = () => {
     setFile(files[0]);
   };
   return (
-    <div>
-      <h1>공부해 스탑워치</h1>
+    <div className={styles.content}>
+      <h1>스탑워치</h1>
       <Stopwatch image={file} />
       <input type="file" onChange={fileUploadHandler} />
     </div>
