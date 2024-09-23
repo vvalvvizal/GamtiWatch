@@ -31,8 +31,19 @@ const ProgressCircle = ({
 
   return (
     <div style={{ width: 200, height: 200 }}>
-      <CircularProgressbarWithChildren value={percentage}>
-        <img src={imageSrc} alt="Icon" style={{ width: 40, marginTop: -5 }} />
+      <CircularProgressbarWithChildren
+        value={percentage}
+        styles={{
+          path: { stroke: "#ffe365" },
+          trail: {
+            stroke: "#d6d6d6",
+          },
+          background: {
+            fill: "#3e98c7",
+          },
+        }}
+      >
+        <img src={imageSrc} alt="Icon" style={{ width: 80, marginTop: 0 }} />
         <div>{`${hours}:${minutes.toString().padStart(2, "0")}:
         ${seconds.toString().padStart(2, "0")}:
         ${milliseconds.toString().padStart(2, "0")}`}</div>

@@ -45,7 +45,13 @@ const Stopwatch = ({ image }: StopwatchProps) => {
         milliseconds={milliseconds}
         imageFile={image}
       />
-      <button onClick={startAndStop}> {isRunning ? "Stop" : "Start"}</button>
+
+      <button
+        onClick={startAndStop}
+        className={`${styles.button} ${isRunning ? styles.running : ""}`}
+      >
+        {isRunning ? "Stop" : "Start"}
+      </button>
     </div>
   );
 };

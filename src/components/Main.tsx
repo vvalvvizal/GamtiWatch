@@ -14,7 +14,15 @@ const Main = () => {
     <div className={styles.content}>
       <h1>스탑워치</h1>
       <Stopwatch image={file} />
-      <input type="file" onChange={fileUploadHandler} />
+
+      <label className={styles.uploadLabel}>
+        파일 선택
+        <input
+          type="file"
+          onChange={fileUploadHandler}
+          className={styles.fileInput}
+        />
+      </label>
     </div>
   );
 };

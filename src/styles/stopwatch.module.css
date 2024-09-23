@@ -4,3 +4,21 @@
   justify-content: center;
   align-items: center;
 }
+.button {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #929292; /* 원하는 배경 색상 */
+  color: white; /* 글자 색상 */
+  border-radius: 5px; /* 모서리 둥글기 */
+  cursor: pointer; /* 마우스 커서 모양 */
+  border-width: 0;
+}
+.button:hover {
+  background-color: #ffe365; /* 원하는 배경 색상 */
+}
+.running {
+  background-color: #ffe365;
+  color: red;
+  font-weight: bold;
+}
