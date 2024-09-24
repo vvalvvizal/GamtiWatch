@@ -13,6 +13,8 @@ const Stopwatch = ({ image }: StopwatchProps) => {
   const [maxTime, setMaxTime] = useState(6000);
 
   const items = [
+    { name: "3초", value: 300 },
+    { name: "1분", value: 6000 },
     { name: "2분", value: 12000 },
     { name: "10분", value: 60000 },
   ];
@@ -25,6 +27,13 @@ const Stopwatch = ({ image }: StopwatchProps) => {
     }
     return () => clearInterval(intervalId);
   }, [isRunning, time, maxTime]);
+
+  useEffect(() => {
+    console.log(maxTime);
+    setIsRunning(false);
+    setTime(0);
+    setPercentage(0);
+  }, [maxTime]);
 
   const TimeCalc = (time: number) => {
     const hours = Math.floor(time / 360000);
@@ -54,7 +63,9 @@ const Stopwatch = ({ image }: StopwatchProps) => {
       {/* <p>
         {Maxtime.hours}시간 {Maxtime.minutes}분
       </p> */}
+
       <SelectButton maxTime={maxTime} setMaxTime={setMaxTime} items={items} />
+
       <ProgressCircle
         percentage={percentage}
         hours={Nowtime.hours}

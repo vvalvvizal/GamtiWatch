@@ -11,7 +11,7 @@ interface SelectButtonProps {
 
 const SelectButton = ({ maxTime, setMaxTime, items }: SelectButtonProps) => {
   return (
-    <div>
+    <div style={{ marginBottom: "20px" }}>
       <PrimeSelectButton
         value={maxTime}
         onChange={(e) => setMaxTime(e.value)}
