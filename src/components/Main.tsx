@@ -13,7 +13,6 @@ const Main = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1></h1>
         <Stopwatch image={file} />
 
         <label className={styles.uploadLabel}>
