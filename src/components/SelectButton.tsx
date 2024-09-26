@@ -1,5 +1,8 @@
 import React from "react";
-import { SelectButton as PrimeSelectButton } from "primereact/selectbutton";
+import {
+  SelectButton as PrimeSelectButton,
+  SelectButtonChangeEvent,
+} from "primereact/selectbutton";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 
@@ -14,7 +17,7 @@ const SelectButton = ({ maxTime, setMaxTime, items }: SelectButtonProps) => {
     <div style={{ marginBottom: "20px" }}>
       <PrimeSelectButton
         value={maxTime}
-        onChange={(e) => setMaxTime(e.value)}
+        onChange={(e: SelectButtonChangeEvent) => setMaxTime(e.value)}
         optionLabel="name"
         options={items}
       />
