@@ -17,6 +17,7 @@ const Stopwatch = ({ image }: StopwatchProps) => {
     { name: "1분", value: 6000 },
     { name: "2분", value: 12000 },
     { name: "10분", value: 60000 },
+    { name: "30분", value: 180000 },
   ];
 
   useEffect(() => {
