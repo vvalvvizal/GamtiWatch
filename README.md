@@ -1,6 +1,9 @@
 ## Description
 
 The stopwatch you want
+![apple-touch-icon-152x152](https://github.com/user-attachments/assets/74958cc5-79ba-4a48-99df-b650c0d6ca7c)
+
+
 
 ## Demo
 
