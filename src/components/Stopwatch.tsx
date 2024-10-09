@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import ProgressCircle from "./progressCircle";
 import styles from "../styles/stopwatch.module.css";
 import SelectButton from "./SelectButton";
+import Notification from "./Notification"; // Notification 컴포넌트 import
+import { toast } from "react-toastify"; // Toast 기능 사용을 위한 임포트
 
 interface StopwatchProps {
   image: File | undefined;
 }
+
 const Stopwatch = ({ image }: StopwatchProps) => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -26,9 +29,19 @@ const Stopwatch = ({ image }: StopwatchProps) => {
       intervalId = setInterval(() => setTime(time + 1), 10);
       setPercentage(Math.min((time / maxTime) * 100, 100));
     }
+    if (time >= maxTime) {
+      handleTimerComplete();
+      setIsRunning(false);
+    }
     return () => clearInterval(intervalId);
   }, [isRunning, time, maxTime]);
 
+  const startAndStop = () => {
+    setIsRunning(!isRunning);
+  };
+  const handleTimerComplete = () => {
+    toast("타이머가 완료되었습니다."); // 알림 발생
+  };
   useEffect(() => {
     console.log(maxTime);
     setIsRunning(false);
@@ -39,34 +52,22 @@ const Stopwatch = ({ image }: StopwatchProps) => {
   const TimeCalc = (time: number) => {
     const hours = Math.floor(time / 360000);
     const minutes = Math.floor((time % 360000) / 6000);
-
     const seconds = Math.floor((time % 6000) / 100);
-
     const milliseconds = time % 100;
 
     return {
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds,
-      milliseconds: milliseconds,
+      hours,
+      minutes,
+      seconds,
+      milliseconds,
     };
   };
 
-  const startAndStop = () => {
-    setIsRunning(!isRunning);
-  };
-
   const Nowtime = TimeCalc(time);
-  // const Maxtime = TimeCalc(maxTime);
 
   return (
     <div className={styles["stopwatch-container"]}>
-      {/* <p>
-        {Maxtime.hours}시간 {Maxtime.minutes}분
-      </p> */}
-
       <SelectButton maxTime={maxTime} setMaxTime={setMaxTime} items={items} />
-
       <ProgressCircle
         percentage={percentage}
         hours={Nowtime.hours}
@@ -75,14 +76,15 @@ const Stopwatch = ({ image }: StopwatchProps) => {
         milliseconds={Nowtime.milliseconds}
         imageFile={image}
       />
-
       <button
         onClick={startAndStop}
         className={`${styles.button} ${isRunning ? styles.running : ""}`}
       >
         {isRunning ? "Stop" : "Start"}
       </button>
+      <Notification /> {/* Notification 컴포넌트 추가 */}
     </div>
   );
 };
+
 export default Stopwatch;

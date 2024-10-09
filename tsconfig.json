@@ -3,9 +3,9 @@
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["vite/client", "vite-plugin-svgr/client"],
-    "allowJs": false,
+    "allowJs": true, //js허용
     "skipLibCheck": false,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,5 +17,6 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules"] // 노드 모듈 제외
 }

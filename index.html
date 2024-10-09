@@ -27,14 +27,33 @@
     <script type="module" src="/src/index.tsx"></script>
     <script>
       if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-          .register("/GamtiWatch/ServiceWorker.js")
-          .then((registration) => {
-            console.log("Service worker registration succeeded:", registration);
-          })
-          .catch((err) => {
-            console.log("Service worker registration failed:", error);
-          });
+        (async () => {
+          // 기존 PWA 서비스 워커 등록
+          let registration = await navigator.serviceWorker.getRegistration(
+            "/ServiceWorker.js",
+            { scope: "/firebase-cloud-messaging-push-scope" }
+          );
+          if (!registration) {
+            registration = await navigator.serviceWorker.register(
+              "/ServiceWorker.js"
+            );
+            console.log(
+              "PWA Service worker registration succeeded:",
+              registration
+            );
+          }
+
+          // Firebase Messaging을 위한 서비스 워커 등록
+          registration = await navigator.serviceWorker.register(
+            "/firebase-messaging-sw.js"
+          );
+          console.log(
+            "FCM Service worker registration succeeded:",
+            registration
+          );
+        })().catch((error) => {
+          console.error("Service worker registration failed:", error);
+        });
       } else {
         console.log("Service workers are not supported.");
       }
