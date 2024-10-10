@@ -3,8 +3,6 @@
 The stopwatch you want
 ![apple-touch-icon-152x152](https://github.com/user-attachments/assets/74958cc5-79ba-4a48-99df-b650c0d6ca7c)
 
-
-
 ## Demo
 
 _Visit [Demo link](https://vvalvvizal.github.io/GamtiWatch/)_
@@ -53,6 +51,10 @@ Cross-platform App을 이용한 크로스플랫폼 앱 구축
       }
     </script>
 ```
+
+- FCM
+
+클라우드 메시지 서비스를 통한 푸시 알림
 
 ### UI Materials
 
