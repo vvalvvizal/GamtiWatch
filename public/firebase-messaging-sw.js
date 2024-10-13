@@ -16,17 +16,16 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Retrieve firebase messaging
+
 const messaging = firebase.messaging();
 
-// Handle incoming messages while the app is not in focus (i.e in the background, hidden behind other tabs, or completely closed).
 //백그라운드 실행 serviceworker
 messaging.onBackgroundMessage((payload) => {
   console.log("Received background message ", payload);
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "favicon.ico", // Change this to your icon path
+    icon: "favicon.ico", 
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
