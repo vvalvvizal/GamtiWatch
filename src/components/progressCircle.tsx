@@ -35,7 +35,10 @@ const ProgressCircle = ({
       <CircularProgressbarWithChildren
         value={percentage}
         styles={{
-          path: { stroke: "#ffe365" },
+          path: {
+            stroke: "#ffe365",
+            transition: "none",
+          },
           trail: {
             stroke: "#d6d6d6",
           },

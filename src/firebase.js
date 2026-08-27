@@ -13,11 +13,22 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-initializeApp(firebaseConfig);
+const isFirebaseConfigured = Boolean(
+  firebaseConfig.apiKey &&
+    firebaseConfig.messagingSenderId &&
+    firebaseConfig.appId &&
+    import.meta.env.VITE_VAPID_KEY
+);
 
-const messaging = getMessaging();
+const messaging = isFirebaseConfigured
+  ? getMessaging(initializeApp(firebaseConfig))
+  : null;
 
 export const requestForToken = () => {
+  if (!messaging) {
+    return Promise.resolve();
+  }
+
   return getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY })
     .then((currentToken) => {
       if (currentToken) {
@@ -42,18 +53,21 @@ export const requestForToken = () => {
 };
 
 //알림 권한 요청
-Notification.requestPermission().then((permission) => {
-  if (permission === "granted") {
-    console.log("Notification permission granted.");
-    // 토큰 요청 호출
-    requestForToken();
-  } else {
-    console.log("Unable to get permission to notify.");
-  }
-});
+if (messaging && "Notification" in window) {
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+      requestForToken();
+    } else {
+      console.log("Unable to get permission to notify.");
+    }
+  });
+}
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
+    if (!messaging) return;
+
     onMessage(messaging, (payload) => {
       resolve(payload);
     });

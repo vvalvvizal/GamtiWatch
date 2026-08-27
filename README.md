@@ -9,13 +9,37 @@ _Visit [Demo link](https://vvalvvizal.github.io/GamtiWatch/)_
 
 ## Features
 
+- Focus timer with preset durations
+- Unlimited stopwatch mode
+- Completion sound and fries animation
+- Installable PWA
+
+## Install as a PWA
+
+Open the [GamtiWatch demo](https://vvalvvizal.github.io/GamtiWatch/), then follow the steps for your device.
+
+### Desktop Chrome
+
+1. Click the install icon in the address bar.
+2. Select **Install**.
+
+### Android Chrome
+
+1. Open the **⋮** menu.
+2. Select **Install app** or **Add to Home screen**.
+
+### iPhone or iPad
+
+1. Open the site in Safari and tap **Share**.
+2. Select **Add to Home Screen**, then tap **Add**.
+
 ## How to run
 
 ### Local development
 
 - Clone the project and cd into project
 - npm install
-- npm start and go to [link](*http://localhost:3000*)
+- npm start and go to `http://localhost:3000/GamtiWatch/`
 
 ### Deployment
 

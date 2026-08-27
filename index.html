@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="GamtiWatch" content="공부를 위한 스탑워치 감티워치" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon-152x152.png" />
-    <link rel="msapplication-TileImage" href="/icons/mstile-310x310.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon-152x152.png" />
+    <link rel="msapplication-TileImage" href="icons/mstile-310x310.png" />
     <link rel="msapplication-TileColor" content="#000000" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="manifest.json" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -25,17 +25,16 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
-    <script>
+    <script type="module">
       if ("serviceWorker" in navigator) {
         (async () => {
+          const baseUrl = import.meta.env.BASE_URL;
           // 기존 PWA 서비스 워커 등록
-          let registration = await navigator.serviceWorker.getRegistration(
-            "/ServiceWorker.js",
-            { scope: "/firebase-cloud-messaging-push-scope" }
-          );
+          let registration = await navigator.serviceWorker.getRegistration(baseUrl);
           if (!registration) {
             registration = await navigator.serviceWorker.register(
-              "/ServiceWorker.js"
+              `${baseUrl}ServiceWorker.js`,
+              { scope: baseUrl }
             );
             console.log(
               "PWA Service worker registration succeeded:",
@@ -45,7 +44,7 @@
 
           // Firebase Messaging을 위한 서비스 워커 등록
           registration = await navigator.serviceWorker.register(
-            "/firebase-messaging-sw.js"
+            `${baseUrl}firebase-messaging-sw.js`
           );
           console.log(
             "FCM Service worker registration succeeded:",

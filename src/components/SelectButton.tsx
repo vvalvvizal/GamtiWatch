@@ -20,6 +20,7 @@ const SelectButton = ({ maxTime, setMaxTime, items }: SelectButtonProps) => {
         onChange={(e: SelectButtonChangeEvent) => setMaxTime(e.value)}
         optionLabel="name"
         options={items}
+        allowEmpty={false}
       />
     </div>
   );
