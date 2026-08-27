@@ -1,6 +1,8 @@
 {
   "short_name": "GamtiWatch",
   "name": "Stopwatch for Gamti",
+  "id": "/GamtiWatch/",
+  "scope": "/GamtiWatch/",
   "icons": [
     {
       "src": "favicon.ico",
@@ -28,7 +30,7 @@
       "sizes": "196x196"
     }
   ],
-  "start_url": ".",
+  "start_url": "/GamtiWatch/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
