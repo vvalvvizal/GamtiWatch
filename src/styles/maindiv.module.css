@@ -5,10 +5,28 @@ html {
 }
 
 .container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  min-height: 620px;
+  background: #fff;
+}
+.container::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 14px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--brand-red) 0,
+    var(--brand-red) 14px,
+    #fff 14px,
+    #fff 27px
+  );
+  content: "";
 }
 
 .content {
@@ -16,12 +34,16 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: min(470px, calc(100vw - 32px));
+  min-height: 570px;
+  padding: 34px 24px 28px;
+  box-sizing: border-box;
 }
 .uploadLabel {
   margin-top: 10px;
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: var(--brand-blue);
   color: white;
   border-radius: 5px;
   cursor: pointer;

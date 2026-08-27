@@ -8,7 +8,10 @@ const Main = () => {
   const fileUploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
     const files = target.files as FileList;
-    setFile(files[0]);
+    const selectedFile = files[0];
+    if (selectedFile?.type.startsWith("image/")) {
+      setFile(selectedFile);
+    }
   };
   return (
     <div className={styles.container}>
@@ -19,6 +22,7 @@ const Main = () => {
           파일 선택
           <input
             type="file"
+            accept="image/*"
             onChange={fileUploadHandler}
             className={styles.fileInput}
           />

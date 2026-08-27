@@ -29,27 +29,17 @@
       if ("serviceWorker" in navigator) {
         (async () => {
           const baseUrl = import.meta.env.BASE_URL;
-          // 기존 PWA 서비스 워커 등록
-          let registration = await navigator.serviceWorker.getRegistration(baseUrl);
+          const registration = await navigator.serviceWorker.getRegistration(baseUrl);
           if (!registration) {
-            registration = await navigator.serviceWorker.register(
+            const newRegistration = await navigator.serviceWorker.register(
               `${baseUrl}ServiceWorker.js`,
               { scope: baseUrl }
             );
             console.log(
               "PWA Service worker registration succeeded:",
-              registration
+              newRegistration
             );
           }
-
-          // Firebase Messaging을 위한 서비스 워커 등록
-          registration = await navigator.serviceWorker.register(
-            `${baseUrl}firebase-messaging-sw.js`
-          );
-          console.log(
-            "FCM Service worker registration succeeded:",
-            registration
-          );
         })().catch((error) => {
           console.error("Service worker registration failed:", error);
         });

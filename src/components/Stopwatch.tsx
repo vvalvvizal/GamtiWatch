@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import defaultIcon from "../../public/favicon.ico";
 import ProgressCircle from "./progressCircle";
 import styles from "../styles/stopwatch.module.css";
 import SelectButton from "./SelectButton";
-import Notification from "./Notification"; // Notification 컴포넌트 import
 
 interface StopwatchProps {
   image: File | undefined;
@@ -15,6 +15,8 @@ const Stopwatch = ({ image }: StopwatchProps) => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompletionVisible, setIsCompletionVisible] = useState(false);
+  const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
   const [maxTime, setMaxTime] = useState(6000);
   const startedAtRef = useRef(0);
   const elapsedAtStartRef = useRef(0);
@@ -29,11 +31,22 @@ const Stopwatch = ({ image }: StopwatchProps) => {
   const isStopwatch = mode === "stopwatch";
 
   useEffect(() => {
+    if (!image) {
+      setIconSrc(defaultIcon);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(image);
+    setIconSrc(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [image]);
+
+  useEffect(() => {
     if (!isRunning) return;
 
     const intervalId = window.setInterval(() => {
       const elapsedSinceStart = Math.floor(
-        (performance.now() - startedAtRef.current) / 10
+        (Date.now() - startedAtRef.current) / 10
       );
       setTime(elapsedAtStartRef.current + elapsedSinceStart);
     }, 10);
@@ -47,22 +60,24 @@ const Stopwatch = ({ image }: StopwatchProps) => {
       handleTimerComplete();
       setIsRunning(false);
       setIsCompleted(true);
+      setIsCompletionVisible(true);
     }
   }, [isRunning, isStopwatch, maxTime, time]);
 
   const startAndStop = () => {
     if (isCompleted) {
       elapsedAtStartRef.current = 0;
-      startedAtRef.current = performance.now();
+      startedAtRef.current = Date.now();
       setTime(0);
       setIsCompleted(false);
+      setIsCompletionVisible(false);
       setIsRunning(true);
       return;
     }
 
     if (isRunning) {
       const elapsedSinceStart = Math.floor(
-        (performance.now() - startedAtRef.current) / 10
+        (Date.now() - startedAtRef.current) / 10
       );
       setTime(elapsedAtStartRef.current + elapsedSinceStart);
       setIsRunning(false);
@@ -70,7 +85,7 @@ const Stopwatch = ({ image }: StopwatchProps) => {
     }
 
     elapsedAtStartRef.current = time;
-    startedAtRef.current = performance.now();
+    startedAtRef.current = Date.now();
     setIsRunning(true);
   };
 
@@ -78,8 +93,36 @@ const Stopwatch = ({ image }: StopwatchProps) => {
     setIsRunning(false);
     setTime(0);
     setIsCompleted(false);
+    setIsCompletionVisible(false);
     elapsedAtStartRef.current = 0;
     startedAtRef.current = 0;
+  };
+
+  const changeMode = (nextMode: "timer" | "stopwatch") => {
+    if (nextMode === mode) return;
+
+    setIsRunning(false);
+    setTime(0);
+    setIsCompleted(false);
+    setIsCompletionVisible(false);
+    elapsedAtStartRef.current = 0;
+    startedAtRef.current = 0;
+    setMode(nextMode);
+  };
+
+  const finishStopwatch = () => {
+    if (time === 0 || isCompleted) return;
+
+    if (isRunning) {
+      const elapsedSinceStart = Math.floor(
+        (Date.now() - startedAtRef.current) / 10
+      );
+      setTime(elapsedAtStartRef.current + elapsedSinceStart);
+    }
+    setIsRunning(false);
+    setIsCompleted(true);
+    setIsCompletionVisible(true);
+    handleTimerComplete();
   };
 
   const handleTimerComplete = () => {
@@ -106,9 +149,20 @@ const Stopwatch = ({ image }: StopwatchProps) => {
     setIsRunning(false);
     setTime(0);
     setIsCompleted(false);
+    setIsCompletionVisible(false);
     elapsedAtStartRef.current = 0;
     startedAtRef.current = 0;
-  }, [maxTime, mode]);
+  }, [maxTime]);
+
+  useEffect(() => {
+    if (!isCompletionVisible) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsCompletionVisible(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [isCompletionVisible]);
 
   const TimeCalc = (time: number) => {
     const hours = Math.floor(time / 360000);
@@ -126,7 +180,7 @@ const Stopwatch = ({ image }: StopwatchProps) => {
 
   const Nowtime = TimeCalc(time);
   const percentage = isStopwatch
-    ? ((time % 6000) / 6000) * 100
+    ? 0
     : Math.min((time / maxTime) * 100, 100);
 
   return (
@@ -134,14 +188,14 @@ const Stopwatch = ({ image }: StopwatchProps) => {
       <div className={styles.modeTabs} aria-label="시간 측정 모드">
         <button
           className={`${styles.modeTab} ${mode === "timer" ? styles.activeMode : ""}`}
-          onClick={() => setMode("timer")}
+          onClick={() => changeMode("timer")}
           aria-pressed={mode === "timer"}
         >
           타이머
         </button>
         <button
           className={`${styles.modeTab} ${mode === "stopwatch" ? styles.activeMode : ""}`}
-          onClick={() => setMode("stopwatch")}
+          onClick={() => changeMode("stopwatch")}
           aria-pressed={mode === "stopwatch"}
         >
           스톱워치
@@ -160,9 +214,15 @@ const Stopwatch = ({ image }: StopwatchProps) => {
         seconds={Nowtime.seconds}
         milliseconds={Nowtime.milliseconds}
         imageFile={image}
+        isStopwatch={isStopwatch}
       />
-      {isCompleted && (
+      {isCompletionVisible && (
         <>
+          <button
+            className={styles.completionBackdrop}
+            onClick={() => setIsCompletionVisible(false)}
+            aria-label="완료 알림 닫기"
+          />
           <div className={styles.friesRain} aria-hidden="true">
             {Array.from({ length: FRIES_COUNT }, (_, index) => (
               <span
@@ -171,20 +231,50 @@ const Stopwatch = ({ image }: StopwatchProps) => {
                 style={
                   {
                     "--fry-left": `${(index * 37) % 100}%`,
-                    "--fry-delay": `${(index % 9) * 0.12}s`,
-                    "--fry-duration": `${2.4 + (index % 5) * 0.22}s`,
+                    "--fry-delay": `${(index % 9) * 0.08}s`,
+                    "--fry-duration": `${2.6 + (index % 5) * 0.2}s`,
+                    "--fry-apex": `${10 + ((index * 23) % 32)}vh`,
                     "--fry-rotation": `${(index % 2 ? 1 : -1) * (90 + index * 13)}deg`,
                   } as React.CSSProperties
                 }
               >
-                🍟
+                <span className={styles.fryFace} aria-hidden="true">
+                  <i />
+                  <i />
+                  <b />
+                </span>
               </span>
             ))}
           </div>
-          <div className={styles.completionMessage} role="status">
-            <span className={styles.completionIcon}>🍟</span>
-            <strong>감튀 완료!</strong>
-            <span>오늘의 집중력이 바삭하게 익었어요.</span>
+          <div
+            className={styles.completionMessage}
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="집중 시간 완료"
+          >
+            <button
+              className={styles.closeCompletion}
+              onClick={() => setIsCompletionVisible(false)}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+            <img className={styles.completionIcon} src={iconSrc} alt="집중 아이콘" />
+            <span className={styles.completionText}>오늘의 감튀가 바삭하게 익었어요.</span>
+            {isStopwatch && (
+              <div className={styles.finalTime} aria-label="최종 집중 시간">
+                {Nowtime.hours.toString().padStart(2, "0")}:
+                {Nowtime.minutes.toString().padStart(2, "0")}:
+                {Nowtime.seconds.toString().padStart(2, "0")}.
+                {Nowtime.milliseconds.toString().padStart(2, "0")}
+              </div>
+            )}
+            <button
+              className={styles.confirmCompletion}
+              onClick={() => setIsCompletionVisible(false)}
+            >
+              ESC
+            </button>
           </div>
         </>
       )}
@@ -208,8 +298,16 @@ const Stopwatch = ({ image }: StopwatchProps) => {
         >
           초기화
         </button>
+        {isStopwatch && (
+          <button
+            onClick={finishStopwatch}
+            className={`${styles.button} ${styles.finishButton}`}
+            disabled={time === 0 || isCompleted}
+          >
+            종료
+          </button>
+        )}
       </div>
-      <Notification /> {/* Notification 컴포넌트 추가 */}
     </div>
   );
 };

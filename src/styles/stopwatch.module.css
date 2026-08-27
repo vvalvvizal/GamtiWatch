@@ -24,7 +24,7 @@
   cursor: pointer;
 }
 .activeMode {
-  background-color: #ffe365;
+  background-color: var(--brand-yellow);
   color: #222;
   box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
 }
@@ -49,52 +49,223 @@
   font-size: 14px;
 }
 .completionMessage {
-  position: relative;
-  z-index: 11;
+  position: fixed;
+  z-index: 22;
+  top: 50%;
+  left: 50%;
+  width: min(300px, calc(100vw - 64px));
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  margin-top: 16px;
-  padding: 14px 22px;
-  border: 2px solid #f2c94c;
-  border-radius: 16px;
-  background-color: #fff8d8;
-  color: #795400;
-  box-shadow: 0 8px 24px rgb(121 84 0 / 18%);
+  overflow: hidden;
+  padding: 42px 22px 22px;
+  border: 0;
+  border-radius: 20px;
+  background-color: var(--brand-cream);
+  color: var(--brand-ink);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 12%);
   animation: completion-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1);
+  transform: translate(-50%, -50%);
+}
+.completionMessage::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 18px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--brand-red) 0,
+    var(--brand-red) 14px,
+    var(--brand-cream) 14px,
+    var(--brand-cream) 27px
+  );
+  content: "";
 }
 .completionMessage strong {
   font-size: 20px;
 }
-.completionMessage span:last-child {
-  font-size: 14px;
+.completionText {
+  color: var(--brand-ink);
+  font-size: 15px;
+  font-weight: 600;
 }
 .completionIcon {
-  font-size: 32px;
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  border-radius: 16px;
+}
+.finalTime {
+  margin-top: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--brand-blue);
+  border-radius: 10px;
+  background: #eaf6fb;
+  color: #245d78;
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.completionBackdrop {
+  position: fixed;
+  z-index: 19;
+  inset: 0;
+  border: 0;
+  background: #fff;
+}
+.closeCompletion {
+  position: absolute;
+  top: 22px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--brand-red);
+  font-size: 26px;
   line-height: 1;
+  cursor: pointer;
+}
+.confirmCompletion {
+  margin-top: 10px;
+  padding: 9px 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand-red);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
 }
 .friesRain {
   position: fixed;
-  z-index: 10;
+  z-index: 20;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
 }
 .fallingFry {
   position: absolute;
-  top: -60px;
+  top: 0;
   left: var(--fry-left);
-  font-size: 30px;
-  filter: drop-shadow(0 3px 2px rgb(0 0 0 / 15%));
-  animation: fry-fall var(--fry-duration) ease-in var(--fry-delay) forwards;
+  width: 18px;
+  height: 72px;
+  border: 1px solid #d99d18;
+  border-radius: 4px 4px 7px 7px;
+  background: linear-gradient(90deg, #e9a91f 0%, #ffd85a 35%, #f5b82f 72%, #ffe27b 100%);
+  box-shadow: inset 2px 0 2px rgb(255 244 166 / 60%), 2px 4px 4px rgb(92 56 0 / 20%);
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+  animation: fry-pop var(--fry-duration) linear var(--fry-delay) both;
 }
-@keyframes fry-fall {
+.fallingFry::before {
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  width: 3px;
+  height: 72%;
+  border-radius: 999px;
+  background: rgb(255 246 184 / 75%);
+  content: "";
+}
+.fallingFry::after {
+  position: absolute;
+  top: 15px;
+  left: 6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff4b0;
+  box-shadow: 2px 14px 0 #fff0a0, -1px 25px 0 #ffe98b;
+  content: "";
+}
+.fryFace {
+  position: absolute;
+  top: 16px;
+  right: 1px;
+  left: 1px;
+  height: 14px;
+}
+.fryFace i {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 6px;
+  border: 1px solid #245d78;
+  border-radius: 45% 55% 50% 40%;
+  background: var(--brand-blue);
+  box-shadow: inset 1px 1px 0 rgb(255 255 255 / 70%);
+}
+.fryFace i:first-child {
+  top: 2px;
+  left: 1px;
+  transform: rotate(-18deg);
+}
+.fryFace i:nth-child(2) {
+  top: -1px;
+  right: 1px;
+  width: 3px;
+  height: 4px;
+  transform: rotate(24deg);
+}
+.fryFace b {
+  position: absolute;
+  top: 9px;
+  left: 3px;
+  width: 6px;
+  height: 3px;
+  border-bottom: 1px solid #5b271e;
+  border-radius: 0 0 6px 2px;
+  transform: rotate(-12deg);
+}
+.fallingFry:nth-child(3n) .fryFace b {
+  top: 8px;
+  left: 2px;
+  width: 8px;
+  height: 5px;
+  border: 2px solid #b42318;
+  border-radius: 50%;
+  background: #ed7770;
+  transform: rotate(8deg);
+}
+.fallingFry:nth-child(5n) .fryFace b {
+  top: 8px;
+  left: 4px;
+  width: 5px;
+  height: 7px;
+  border: 1px solid #5b271e;
+  border-radius: 50%;
+  background: #5b271e;
+  transform: rotate(-5deg);
+}
+.fallingFry:nth-child(7n) .fryFace b {
+  top: 10px;
+  left: 1px;
+  width: 9px;
+  border-bottom: 2px solid #b42318;
+  transform: rotate(16deg);
+}
+.fallingFry:nth-child(3n) {
+  width: 15px;
+  height: 62px;
+}
+.fallingFry:nth-child(4n) {
+  width: 22px;
+  height: 88px;
+}
+@keyframes fry-pop {
   0% {
-    transform: translateY(-10vh) rotate(0deg) scale(0.8);
+    transform: translateY(100vh) rotate(0deg) scale(0.2);
     opacity: 0;
   }
-  10% {
+  12% {
+    opacity: 1;
+  }
+  60% {
+    animation-timing-function: cubic-bezier(0.7, 0, 1, 1);
+    transform: translateY(var(--fry-apex)) rotate(var(--fry-rotation)) scale(1);
     opacity: 1;
   }
   100% {
@@ -104,11 +275,11 @@
 }
 @keyframes completion-pop {
   from {
-    transform: scale(0.6);
+    transform: translate(-50%, -50%) scale(0.6);
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
 }
@@ -122,7 +293,7 @@
   }
 }
 .button:hover {
-  background-color: #ffe365; /* 원하는 배경 색상 */
+  background-color: var(--brand-yellow);
 }
 .button:disabled {
   cursor: not-allowed;
@@ -134,8 +305,14 @@
 .resetButton {
   background-color: #666;
 }
+.finishButton {
+  background-color: var(--brand-red);
+}
+.finishButton:hover {
+  background-color: #b71c1c;
+}
 .running {
-  background-color: #ffe365;
+  background-color: var(--brand-yellow);
   color: red;
   font-weight: bold;
 }

@@ -10,6 +10,7 @@ interface ProgressCircleProps {
   seconds: number;
   milliseconds: number;
   imageFile: File | undefined;
+  isStopwatch: boolean;
 }
 
 const ProgressCircle = ({
@@ -19,6 +20,7 @@ const ProgressCircle = ({
   seconds,
   milliseconds,
   imageFile,
+  isStopwatch,
 }: ProgressCircleProps) => {
   const [imageSrc, setImagesrc] = useState<string>(defaultIcon);
 
@@ -31,23 +33,28 @@ const ProgressCircle = ({
   }, [imageFile]);
 
   return (
-    <div style={{ width: 200, height: 200 }}>
+    <div style={{ width: "min(260px, 78vw)", aspectRatio: "1" }}>
       <CircularProgressbarWithChildren
-        value={percentage}
+        value={isStopwatch ? 18 : percentage}
         styles={{
           path: {
-            stroke: "#ffe365",
+            stroke: "var(--brand-yellow)",
             transition: "none",
+            transform: isStopwatch
+              ? `rotate(${((seconds + milliseconds / 100) / 60) * 360}deg)`
+              : "none",
+            transformOrigin: "center",
+            strokeLinecap: "round",
           },
           trail: {
             stroke: "#d6d6d6",
           },
           background: {
-            fill: "#3e98c7",
+            fill: "var(--brand-blue)",
           },
         }}
       >
-        <img src={imageSrc} alt="Icon" style={{ width: 80, marginTop: 0 }} />
+        <img src={imageSrc} alt="Icon" style={{ width: 96, marginTop: 0 }} />
         <div>{`${hours}:${minutes.toString().padStart(2, "0")}:
         ${seconds.toString().padStart(2, "0")}:
         ${milliseconds.toString().padStart(2, "0")}`}</div>
